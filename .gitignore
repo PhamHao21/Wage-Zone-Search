@@ -1,0 +1,25 @@
+node_modules
+/.svelte-kit
+/build
+/package
+
+# Vercel & Output
+.output
+.vercel
+.netlify
+.wrangler
+
+# OS & IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
