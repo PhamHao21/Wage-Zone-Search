@@ -55,11 +55,11 @@ This project is released under personal copyright. Please cite the source when r
 
 1. Do you plan to expand this project further?
 
-Absolutely. I intend to refine the granularity of the data. Currently, the map operates on a single-tier (provincial) level, but my roadmap includes developing it into a dual-tier system to provide more precise data down to specific districts and municipalities in the future.
+   Absolutely. I intend to refine the granularity of the data. Currently, the map operates on a single-tier (provincial) level, but my roadmap includes developing it into a dual-tier system to provide more precise data down to specific districts and municipalities in the future.
 
 2. Is the current website design a bit too simple?
 
-I agree, and that is intentional. At this stage, this project is designed as a modular feature rather than a standalone complex site. My long-term vision is to integrate this specialized tool into a much larger, comprehensive platform that I am currently planning.
+   I agree, and that is intentional. At this stage, this project is designed as a modular feature rather than a standalone complex site. My long-term vision is to integrate this specialized tool into a much larger, comprehensive platform that I am currently planning.
 
 3. What inspired the focus on 2026 data?
    The goal was to stay ahead of the curve. By preparing the infrastructure for 2026 regulations now, I ensure that the tool remains relevant and provides high utility for users as soon as the updated wage policies take effect.
