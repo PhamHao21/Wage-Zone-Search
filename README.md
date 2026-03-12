@@ -1,4 +1,5 @@
-📍 Wage Zone Search - Vietnam Minimum Wage Lookup
+# 📍 Wage Zone Search - Vietnam Minimum Wage Lookup
+
 An interactive web application designed to help employees and businesses easily look up regional minimum wage levels in Vietnam through an intuitive map interface.
 
 ✨ Key Features
@@ -64,3 +65,5 @@ This project is released under personal copyright. Please cite the source when r
 3. What inspired the focus on 2026 data?
    
    The goal was to stay ahead of the curve. By preparing the infrastructure for 2026 regulations now, I ensure that the tool remains relevant and provides high utility for users as soon as the updated wage policies take effect.
+
+🔗 **Live Demo:** [tracuuluongtoithieu.vercel.app](https://tracuuluongtoithieu.vercel.app/)
