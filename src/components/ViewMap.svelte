@@ -58,8 +58,8 @@
     }).addTo(map);
 
     const islands = [
-      { name: "Quần đảo Hoàng Sa", pos: [16.5, 112.0] },
-      { name: "Quần đảo Trường Sa", pos: [10.5, 114.5] }
+      { name: "Hoàng Sa", pos: [16.5, 112.0] },
+      { name: "Trường Sa", pos: [10.5, 114.5] }
     ];
 
     islands.forEach(island => {
