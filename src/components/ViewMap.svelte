@@ -57,8 +57,8 @@
     }).addTo(mapInstance);
 
     const islands = [
-      { name: 'Hoàng Sa', pos: [16.5, 112.0] },
-      { name: 'Trường Sa', pos: [10.5, 114.5] }
+      { name: 'Quần đảo Hoàng Sa', pos: [16.5, 112.0] },
+      { name: 'Quần đảo Trường Sa', pos: [10.5, 114.5] }
     ];
 
     islands.forEach((island) => {
@@ -79,29 +79,56 @@
       geojsonLayer = L.geoJSON(data, {
         style: getStyle,
         onEachFeature: (feature: any, layer: Layer) => {
-          const { TinhThanh, Ma, SapNhap } = feature.properties;
-          const regionId = provinceMapping[Ma] || 4;
-          const region = regions[regionId];
+            const { TinhThanh, Ma, SapNhap } = feature.properties;
+            const regionId = provinceMapping[Ma] || 4;
+            const region = regions[regionId];
 
-          layer.on({
-            click: (e) => {
-              L.DomEvent.stopPropagation(e);
-              (layer as any).bindPopup(`
-                <div class="font-sans p-1">
-                  <div class="flex justify-between items-center border-b border-slate-100 pb-2 mb-2">
-                    <h3 class="text-xl font-black text-slate-800 m-0 leading-tight">${TinhThanh}</h3>
-                    <span class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-[10px] font-bold uppercase ml-2">${region.label}</span>
-                  </div>
-                  <div class="bg-gradient-to-br from-slate-50 to-blue-50 p-3 rounded-2xl border border-blue-100 text-center">
-                    <span class="text-[9px] font-bold text-slate-500 uppercase block tracking-wider mb-1">Mức lương tối thiểu</span>
-                    <div class="text-2xl font-black text-blue-600">${region.amount} <small class="text-[10px]">VNĐ</small></div>
-                  </div>
-                </div>
-              `, { maxWidth: 260 }).openPopup(e.latlng);
-            }
-          });
+            layer.on({
+                click: (e) => {
+                    const isSearched = searchedProvince === Ma;
+                    const isInSelectedRegion = selectedRegions.includes(regionId.toString());
+                    const isActive = isSearched || isInSelectedRegion;
+
+                    if (!isActive) return;
+
+                    L.DomEvent.stopPropagation(e);
+                    (layer as any).bindPopup(`
+                        <div class="p-3 min-w-[220px] max-w-[260px]">
+                            <div class="flex items-center justify-between gap-3 mb-3">
+                                <h3 class="text-xl font-black text-slate-800 tracking-tighter m-0">
+                                    ${TinhThanh}
+                                </h3>
+                                <span class="px-2 py-1 bg-indigo-100 text-indigo-700 rounded-md text-[9px] font-black uppercase tracking-wider border border-indigo-200">
+                                    ${region.label}
+                                </span>
+                            </div>
+
+                            <div class="mb-4 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                                <p class="text-[8px] font-bold text-slate-400 uppercase tracking-widest mb-1">Khu vực:</p>
+                                <p class="text-[11px] text-slate-600 leading-tight font-medium">
+                                    ${SapNhap || TinhThanh}
+                                </p>
+                            </div>
+
+                            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-3 rounded-xl shadow-md">
+                                <span class="text-[8px] font-bold text-blue-100/80 uppercase block tracking-widest mb-1">Mức lương tối thiểu</span>
+                                <div class="flex items-baseline gap-1 text-white">
+                                    <span class="text-xl font-black tracking-tight">
+                                        ${region.amount}
+                                    </span>
+                                    <span class="text-[10px] font-bold opacity-80">VNĐ</span>
+                                </div>
+                            </div>
+                        </div>
+                    `, { 
+                        maxWidth: 300,
+                        className: 'custom-salary-popup',
+                        offset: [0, -5]
+                    }).openPopup(e.latlng);
+                }
+            });
         }
-      }).addTo(mapInstance);
+    }).addTo(mapInstance);
       isDataLoaded = true;
     } catch (err) {
       console.error('Lỗi tải dữ liệu:', err);
@@ -160,4 +187,18 @@
   :global(.leaflet-popup-content-wrapper) { @apply rounded-3xl shadow-2xl; }
   :global(.leaflet-popup-content) { @apply m-0 p-0 !w-72; }
   :global(.leaflet-container) { @apply font-sans; }
+
+  :global(.custom-salary-popup .leaflet-popup-content-wrapper) {
+        @apply rounded-2xl shadow-xl border-none p-0 overflow-hidden bg-white;
+    }
+
+    :global(.custom-salary-popup .leaflet-popup-content) {
+        @apply m-0 !w-auto;
+    }
+
+    :global(.custom-salary-popup .leaflet-popup-tip) {
+        @apply shadow-none bg-white;
+    }
+
+    :global(.leaflet-container) { @apply font-sans; }
 </style>
