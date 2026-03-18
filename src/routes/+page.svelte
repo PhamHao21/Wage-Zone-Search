@@ -72,7 +72,7 @@
   <aside class="w-full md:w-80 bg-white border-b md:border-r border-slate-200 p-5 flex flex-col gap-4 z-10 shadow-lg shrink-0">
     <div>
       <h1 class="text-lg md:text-xl font-bold text-slate-800">Tra cứu vùng lương</h1>
-      <p class="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Dữ liệu 2026</p>
+      <p class="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Dữ liệu cập nhật tại thời điểm 2026</p>
     </div>
 
     <div class="space-y-4">
