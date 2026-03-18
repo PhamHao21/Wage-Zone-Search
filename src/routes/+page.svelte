@@ -2,12 +2,12 @@
   import ViewMap from "../components/ViewMap.svelte";
   import { provinceMapping, SALARY_REGIONS } from "$lib/salaryData";
 
-  let selectedRegion = $state<string | null>(null);
+  let selectedRegions = $state<string[]>([]); 
   let searchedProvince = $state<string | null>(null);
   
   let tempProvinceId = $state("");
 
-const provinces = [
+  const provinces = [
     { id: "32", name: "An Giang" },
     { id: "02", name: "Bắc Ninh" },
     { id: "34", name: "Cà Mau" },
@@ -42,100 +42,84 @@ const provinces = [
     { id: "79", name: "TP. Hồ Chí Minh" },
     { id: "08", name: "Tuyên Quang" },
     { id: "30", name: "Vĩnh Long" }
-].sort((a, b) => a.name.localeCompare(b.name));
-
+  ].sort((a, b) => a.name.localeCompare(b.name));
 
   function handleSearch() {
     if (tempProvinceId) {
       searchedProvince = tempProvinceId;
-      selectedRegion = null;
+      selectedRegions = [];
     }
   }
 
   function toggleRegion(regionId: string) {
-    if (selectedRegion === regionId) {
-      selectedRegion = null;
+    searchedProvince = null;
+    if (selectedRegions.includes(regionId)) {
+      selectedRegions = selectedRegions.filter(id => id !== regionId);
     } else {
-      selectedRegion = regionId;
-      searchedProvince = null;
+      selectedRegions = [...selectedRegions, regionId];
     }
   }
 
   function resetMap() {
-    selectedRegion = null;
+    selectedRegions = [];
     searchedProvince = null;
     tempProvinceId = "";
   }
 </script>
 
-<div class="flex h-screen w-full bg-slate-50 overflow-hidden font-sans">
-  <aside class="w-80 bg-white border-r border-slate-200 p-6 flex flex-col gap-6 z-10 shadow-lg">
+<div class="flex h-[100dvh] w-full flex-col md:flex-row bg-slate-50 overflow-hidden font-sans">
+  
+  <aside class="w-full md:w-80 bg-white border-b md:border-r border-slate-200 p-5 flex flex-col gap-4 z-10 shadow-lg shrink-0">
     <div>
-      <h1 class="text-xl font-bold text-slate-800">Tra cứu vùng lương</h1>
-      <p class="text-xs text-slate-500 mt-1">Dữ liệu cập nhật tại thời điểm 2026</p>
+      <h1 class="text-lg md:text-xl font-bold text-slate-800">Tra cứu vùng lương</h1>
+      <p class="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Dữ liệu 2026</p>
     </div>
 
-    <div class="flex flex-col gap-2">
-      <label for="province-select" class="text-sm font-semibold text-slate-700 italic">Tỉnh/Thành phố:</label>
-      <select 
-        id="province-select"
-        bind:value={tempProvinceId}
-        class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-      >
-        <option value="">-- Chọn Tỉnh/Thành phố --</option>
-        {#each provinces as province}
-          <option value={province.id}>{province.name}</option>
-        {/each}
-      </select>
-      
-      <button 
-        onclick={handleSearch}
-        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-lg transition-colors shadow-md active:scale-95"
-      >
-        Tra cứu
-      </button>
-    </div>
-
-    <hr class="border-slate-100" />
-
-    <div class="flex flex-col gap-3">
-      <p class="text-sm font-semibold text-slate-700 italic">Hiển thị ranh giới toàn vùng:</p>
-      <div class="grid grid-cols-2 gap-2">
-        {#each Object.entries(SALARY_REGIONS) as [id, info]}
-          <button 
-            onclick={() => toggleRegion(id)}
-            class="py-2 px-3 rounded-md text-xs font-bold border-2 transition-all
-            {selectedRegion === id 
-              ? 'bg-slate-800 text-white border-slate-800 shadow-inner' 
-              : 'bg-white text-slate-600 border-slate-200 hover:border-slate-400'}"
+    <div class="space-y-4">
+      <div class="space-y-1">
+        <label for="province-select" class="text-[11px] font-bold text-slate-400 uppercase">Tỉnh/Thành phố:</label>
+        <div class="flex gap-2">
+          <select 
+            id="province-select"
+            bind:value={tempProvinceId}
+            class="flex-1 p-2 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500"
           >
-            {info.label}
-          </button>
-        {/each}
+            <option value="">-- Chọn --</option>
+            {#each provinces as province}
+              <option value={province.id}>{province.name}</option>
+            {/each}
+          </select>
+          <button onclick={handleSearch} class="bg-blue-600 text-white px-4 py-2 rounded-xl font-bold text-sm shadow-md active:scale-95">Tìm</button>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <div class="flex justify-between items-center">
+          <p class="text-[11px] font-bold text-slate-400 uppercase">Chọn vùng:</p>
+          <!-- {#if selectedRegions.length > 0}
+            <span class="text-[10px] bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded font-bold">{selectedRegions.length}</span>
+          {/if} -->
+        </div>
+        <div class="grid grid-cols-4 md:grid-cols-2 gap-1.5">
+          {#each Object.entries(SALARY_REGIONS) as [id, info]}
+            <button 
+              onclick={() => toggleRegion(id)}
+              class="py-2 rounded-lg text-[10px] font-black border-2 transition-all
+              {selectedRegions.includes(id) ? 'bg-slate-800 text-white border-slate-800' : 'bg-white text-slate-600 border-slate-100'}"
+            >
+              {info.label}
+            </button>
+          {/each}
+        </div>
       </div>
     </div>
 
-    <div class="mt-auto">
-      <button 
-        onclick={resetMap}
-        class="text-xs text-slate-400 hover:text-red-500 transition-colors flex items-center gap-1"
-      >
-        <span class="text-lg">↺</span> Đặt lại bản đồ
-      </button>
+    <div class="mt-auto pt-4 border-t">
+       <button onclick={resetMap} class="text-xs text-slate-400 hover:text-red-500 flex items-center gap-1">↺ Đặt lại bản đồ</button>
     </div>
   </aside>
 
-  <main class="flex-1 relative">
-    <ViewMap 
-      bind:selectedRegion 
-      bind:searchedProvince 
-    />
+  <main class="flex-1 relative min-h-0 w-full overflow-hidden">
+    <ViewMap selectedRegions={selectedRegions} bind:searchedProvince />
   </main>
 </div>
-
-<style>
-  @media (max-width: 768px) {
-    .flex-col { flex-direction: column; }
-    aside { width: 100%; height: auto; }
-  }
-</style>
